@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 //Läser in inställningar från env-fil
-require('dotenv').config();
+require("dotenv").config();
 
 //Kopplar upp mot Mongo DB
 mongoose.connect(process.env.MONGODB_URI).then (() =>  {

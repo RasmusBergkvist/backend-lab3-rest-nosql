@@ -2,7 +2,7 @@
 const mongoose = require("./db.js");
 
 //Skapar schema
-const WorkexpSchema = new  mongoose.Schema ({
+const WorkexpSchema = new mongoose.Schema ({
     companyname: {
         type: String,
         required: true
