@@ -14,19 +14,24 @@ app.use(cors());// Tillåter anrop från andra domäner
 app.use(express.json()); //Omvandlar JSON-data till JS-objekt
 
 app.get("/", (req, res) => {
-    res.json({message: "Api is running"});
+    res.json({ message: "Api is running" });
 
 });
 
 //Hämtar från databasen
 app.get("/workexp", async (req, res) => {
-    try{
+
+    try {
         let result = await Workexp.find();
+        
+        if (result.length === 0) {
+            res.status(404).json({ message: "Database is empty." });
+        }
 
         return res.json(result);
 
-    } catch(error) {
-        
+    } catch (error) {
+
         return res.status(500).json(error);
     }
 });
@@ -38,11 +43,26 @@ app.post("/workexp", async (req, res) => {
 
         return res.json(result);
 
-    } catch(error) {
-        
+    } catch (error) {
+
         return res.status(400).json(error);
     }
 });
+
+//Radera objekt i databasen
+app.delete("/workexp/:id", async (req, res) => {
+    try {
+        let result = await Workexp.deleteOne({ _id: req.params.id });
+
+        return res.json(result);
+
+    } catch (error) {
+
+        return res.status(400).json(error);
+    }
+});
+
+
 
 //Lyssnar och startar applikationen på porten
 app.listen(process.env.PORT, () => {
