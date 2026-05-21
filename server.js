@@ -18,12 +18,12 @@ app.get("/", (req, res) => {
 
 });
 
-//Hämtar från databasen
+//Hämtar alla objekt från databasen
 app.get("/workexp", async (req, res) => {
 
     try {
         let result = await Workexp.find();
-        
+
         if (result.length === 0) {
             res.status(404).json({ message: "Database is empty." });
         }
@@ -35,6 +35,26 @@ app.get("/workexp", async (req, res) => {
         return res.status(500).json(error);
     }
 });
+
+//Hämta ett objekt från databasen
+app.get("/workexp/:id", async (req, res) => {
+
+    try {
+        let result = await Workexp.findOne({_id: req.params.id});
+
+        if (!result) {
+            res.status(404).json({ message: "Database is empty." });
+        }
+
+        return res.json(result);
+
+    } catch (error) {
+
+        return res.status(500).json(error);
+    }
+});
+
+
 
 //Lägger till i databasen
 app.post("/workexp", async (req, res) => {
@@ -48,6 +68,32 @@ app.post("/workexp", async (req, res) => {
         return res.status(400).json(error);
     }
 });
+
+//Ändra objekt i databasen
+app.put("/workexp/:id", async (req, res) => {
+    try {
+
+        let result = await Workexp.updateOne({ _id: req.params.id }, {$set: req.body} );
+
+
+        //Om inget resultat hittas
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ message: "No post found" });
+        }
+
+         res.json(result);
+    
+
+    } catch (error) {
+
+        //Vid fel skickas status 500 som felmeddelande.
+        console.error(error)
+        return res.status(500).json({ message: "Failed to update data" });
+    }
+
+});
+
+
 
 //Radera objekt i databasen
 app.delete("/workexp/:id", async (req, res) => {

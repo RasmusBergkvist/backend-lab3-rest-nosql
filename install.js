@@ -2,25 +2,34 @@
 const mongoose = require("./db.js");
 
 //Skapar schema
-const WorkexpSchema = new mongoose.Schema ({
+const WorkexpSchema = new mongoose.Schema({
     companyname: {
         type: String,
-        required: true
+       
+        required: [true, "Companyname is missing"]
     },
     jobtitle: {
         type: String,
-        required: true
+        required: [true, "Jobtitle is missing"]
     },
+
+    location: {
+        type: String,
+        required: [true, "Location is missing"]
+    },
+
     startdate: {
         type: Date,
-        required: true
+        required: [true, "Startdate is missing"]
     },
     enddate: {
         type: Date,
+        required: false
     },
+    
     description: {
         type: String,
-        required: true
+        required: [true, "Description is missing"]
     }
 });
 
