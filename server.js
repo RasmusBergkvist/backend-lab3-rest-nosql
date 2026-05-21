@@ -24,15 +24,18 @@ app.get("/workexp", async (req, res) => {
     try {
         let result = await Workexp.find();
 
+        //Om databasen är tom.
         if (result.length === 0) {
             res.status(404).json({ message: "Database is empty." });
+            return;
         }
 
         return res.json(result);
 
     } catch (error) {
 
-        return res.status(500).json(error);
+         console.error(error)
+        return res.status(500).json({ message: "Internal server error. Failed to get data." });
     }
 });
 
@@ -40,17 +43,19 @@ app.get("/workexp", async (req, res) => {
 app.get("/workexp/:id", async (req, res) => {
 
     try {
-        let result = await Workexp.findOne({_id: req.params.id});
+        let result = await Workexp.findOne({ _id: req.params.id });
 
+        //Om ingen post hittas.
         if (!result) {
-            res.status(404).json({ message: "Database is empty." });
+            res.status(404).json({ message: "No post found." });
+            return;
         }
 
         return res.json(result);
 
     } catch (error) {
 
-        return res.status(500).json(error);
+        return res.status(500).json({message: "Internal server error. Could not get data."});
     }
 });
 
@@ -59,13 +64,34 @@ app.get("/workexp/:id", async (req, res) => {
 //Lägger till i databasen
 app.post("/workexp", async (req, res) => {
     try {
+        //Kontrollera att om datan redan finns. 
+        let existingExp = await Workexp.findOne({
+            companyname: req.body.companyname,
+            jobtitle: req.body.jobtitle,
+            startdate: req.body.startdate
+        });
+
+        if (existingExp) {
+            return res.status(409).json({ message: "Post already exist." })
+        }
+
+
         let result = await Workexp.create(req.body);
 
         return res.json(result);
 
     } catch (error) {
+        //Kontroll att obligatoriska uppgifter är ifyllda.
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                message: "Validation failed. Fill in reqruied fields", errors: error.errors
+            });
+        }
 
-        return res.status(400).json(error);
+        console.error(error)
+        return res.status(500).json({ message: "Internal server error. Failed to post data." })
+
+
     }
 });
 
@@ -73,7 +99,8 @@ app.post("/workexp", async (req, res) => {
 app.put("/workexp/:id", async (req, res) => {
     try {
 
-        let result = await Workexp.updateOne({ _id: req.params.id }, {$set: req.body} );
+        //runValidators: true aktiverar valideringen innan dokumentet uppdateras med ny data
+        let result = await Workexp.updateOne({ _id: req.params.id }, { $set: req.body }, { runValidators: true });
 
 
         //Om inget resultat hittas
@@ -81,14 +108,20 @@ app.put("/workexp/:id", async (req, res) => {
             return res.status(404).json({ message: "No post found" });
         }
 
-         res.json(result);
-    
+        res.json(result);
+
 
     } catch (error) {
+        //Felmeddelande om inte obligatoriska uppgifter är ifyllda
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                message: "Validation failed. Fill in reqruied fields", errors: error.errors
+            });
+        }
 
-        //Vid fel skickas status 500 som felmeddelande.
+        //Vid övriga fel skickas status 500 som felmeddelande.
         console.error(error)
-        return res.status(500).json({ message: "Failed to update data" });
+        return res.status(500).json({ message: "Internal server error. Failed to update data." });
     }
 
 });
@@ -100,12 +133,20 @@ app.delete("/workexp/:id", async (req, res) => {
     try {
         let result = await Workexp.deleteOne({ _id: req.params.id });
 
+        //Om inget resultat hittas
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: "No post found." });
+        }
+
         return res.json(result);
 
     } catch (error) {
 
-        return res.status(400).json(error);
+        console.error(error)
+        return res.status(500).json({ message: "Internal server error. Failed to delete data." });
     }
+    
+
 });
 
 
