@@ -24,10 +24,10 @@ Exempel  `GET /workexp/6a13e7c6b3d667c1b311ac73`
 
 Statuskod vid svar:
 
-**200 OK:** Om datan finns.
-**400 Bad request:** Om felaktigt id anges.
-**404 No found:** Om ingen data hittas.
-**500 Internal Server Error**
+* **200 OK:** Om datan finns.
+* **400 Bad request:** Om felaktigt id anges.
+* **404 No found:** Om ingen data hittas.
+* **500 Internal Server Error**
 
 ## Lägga till objekt
 `POST /workexp`
@@ -45,20 +45,20 @@ Statuskod vid svar:
 
 Statuskod vid svar:
 
-**201 Created:** Om datan läggs till.
-**400 Bad Request:** Om obligatoriska data saknas (companyname, jobtitle, location, startdate och description), eller om felaktigt id anges.
-**409 Conflict:** Om datan som användare försöker lägga till redan finns inlagd.
-**500 Internal Server Error**
+* **201 Created:** Om datan läggs till.
+* **400 Bad Request:** Om obligatoriska data saknas (companyname, jobtitle, location, startdate och description), eller om felaktigt id anges.
+* **409 Conflict:** Om datan som användare försöker lägga till redan finns inlagd.
+* **500 Internal Server Error**
 
 ### Uppdatera objekt
 `PUT /workexp/:id`
 
 Statuskod vid svar:
 
-**200 OK:** Om datan uppdaterades.
-**400 Bad Request:** Om obligatoriska data saknas (companyname, jobtitle, location, startdate och description), eller om felaktigt id anges.
-**404 Not found:** Om ingen data hittas.
-**500 Internal Server Error**
+* **200 OK:** Om datan uppdaterades.
+* **400 Bad Request:** Om obligatoriska data saknas (companyname, jobtitle, location, startdate och description), eller om felaktigt id anges.
+* **404 Not found:** Om ingen data hittas.
+* **500 Internal Server Error**
 
 ### Radera objekt
 DELETE /workexp/:id
@@ -69,7 +69,7 @@ Exempel  `DELETE /workexp/6a13e7c6b3d667c1b311ac73`
 
 Statuskod vid svar:
 
-**200 OK:** Om datan finns.
-**400 Bad request:** Om felaktigt id anges.
-**404 No found:** Om ingen data hittas.
-**500 Internal Server Error**
+* **200 OK:** Om datan finns.
+* **400 Bad request:** Om felaktigt id anges.
+* **404 No found:** Om ingen data hittas.
+* **500 Internal Server Error**
