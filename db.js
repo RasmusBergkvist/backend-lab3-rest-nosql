@@ -6,7 +6,7 @@ require("dotenv").config();
 
 //Kopplar upp mot Mongo DB
 mongoose.connect(process.env.MONGODB_URI).then (() =>  {
-    console.log("Connected to MongoDB")
+    console.log("Connected to Mongo DB!")
 
 }).catch((error) => {
     console.log("Error connected to database: ", error)
