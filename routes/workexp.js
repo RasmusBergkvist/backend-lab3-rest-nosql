@@ -12,7 +12,8 @@ const router = express.Router();
 router.get("/", async (req, res) => {
 
     try {
-        let result = await Workexp.find();
+        //Hämtade sorteras efter senaste startdatum.
+        let result = await Workexp.find().sort({startdate: -1});
 
         //Om databasen är tom.
         if (result.length === 0) {
