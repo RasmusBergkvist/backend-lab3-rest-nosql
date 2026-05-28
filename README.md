@@ -1,6 +1,9 @@
 # Laboration 3.1 REST-API NoSQL
 I denna uppgift skapas ett REST API byggt med Express och Mongo DB. Genom CRUD (Create, Read, Update, Delete) ska arbetslivserfarenhet kunna läggas till, uppdateras och raderas via API:et. Det kommer sedan att integreras med en webbplats i laborationens andra del.
 
+## Url till REST-API
+https://backend-lab3-rest-nosql.onrender.com/
+
 ## Teknik
 Databas: Mongo DB
 Databasserver: Mpngo DB Atlas
